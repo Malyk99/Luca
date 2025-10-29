@@ -9,4 +9,5 @@ import java.util.List;
 public interface GameService {
 	Game create (Game game);
 	List <Game> listAll();
+	Game update(Game game);
 }

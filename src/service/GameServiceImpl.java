@@ -24,8 +24,15 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public List<Game> listAll() {
+		
+		return data.findAll() ;
+	}
+
+	@Override
+	public Game update(Game game) {
 		return null;
 	}
+	
 	
 	
 	

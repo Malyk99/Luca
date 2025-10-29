@@ -6,26 +6,26 @@ public class Game {
 	
 	public int ranking;
 	private String nombre;
-	private enum plataforma plataforma;
+	private Plataforma plataforma;
 	private int anio;
-	private enum Genero genero; 
+	private Genero genero; 
 	private String editor;
 	private double NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_sales;
 	
 	public Game() {}
 	
-	public Game(String nombre) {
-		this.nombre = nombre;
+	public Game(int ranking) {
+		this.ranking = ranking;
 	}
 	
-	public Game(int ranking, String nombre, enum plataforma, int anio, enum genero, String editor, double nA_Sales, double eU_Sales, double jP_Sales,
+	public Game(int ranking, String nombre, Plataforma plataforma, int anio, Genero genero, String editor, double nA_Sales, double eU_Sales, double jP_Sales,
 			double other_Sales, double global_sales) {
 		super();
 		this.ranking = ranking;
 		this.nombre = nombre;
-		this.plataforma = plataforma;
+		this.setPlataforma(plataforma);
 		this.anio = anio;
-		this.genero = genero;
+		this.setGenero(genero);
 		this.editor = editor;
 		NA_Sales = nA_Sales;
 		EU_Sales = eU_Sales;
@@ -122,6 +122,22 @@ public class Game {
 				&& Double.doubleToLongBits(Other_Sales) == Double.doubleToLongBits(other.Other_Sales)
 				&& anio == other.anio && Objects.equals(editor, other.editor) && Objects.equals(nombre, other.nombre)
 				&& ranking == other.ranking;
+	}
+
+	public Plataforma getPlataforma() {
+		return plataforma;
+	}
+
+	public void setPlataforma(Plataforma plataforma) {
+		this.plataforma = plataforma;
+	}
+
+	public Genero getGenero() {
+		return genero;
+	}
+
+	public void setGenero(Genero genero) {
+		this.genero = genero;
 	}
 	
 	
