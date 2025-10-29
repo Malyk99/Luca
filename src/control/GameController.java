@@ -1,77 +1,139 @@
-package control;
-
-import java.util.List;
+package controller;
 
 import model.Game;
+import model.Plataforma;
+import model.Genero;
 import service.GameService;
 
 /**
- * El orquestrador del programa, dirige según las peticiones del usuario filtrando las excepciones
+ * Controller sencillo: valida lo mínimo y maneja todos los errores aquí.
+ * La UI solo muestra el String devuelto.
  */
-
 public class GameController {
-	
-	private final GameService service;
-	
-	public GameController(GameService service) {
-		this.service = service;
-	}
-	
-	/**ejemplo inicial crear juego*/
-	public String createGame(String name) { 
-		try { if (name == null || name.isEmpty() || name.length()>100) {
-			return "Error de input."; }
-			Game game = new Game(name);
-			Game create = service.create(game);
-			return "Juego creado con éxito" +create; 
-		} catch (Exception ex) {
-			return "Error inesperado: "+ex.getMessage();
-		} 
-	}
-	public String createGame(
-        String rankingStr, String name, String plataformaStr, String anioStr,
-        String generoStr, String editor, String naSalesStr, String euSalesStr,
-        String jpSalesStr, String otherSalesStr, String globalSalesStr
-) {
-    try {
-        if (name == null || name.trim().isEmpty() || name.length() > 100)
-            return "Error: el nombre es obligatorio (≤ 100).";
 
-        Integer ranking = parseIntSafe(rankingStr);
-        if (ranking == null || ranking < 1)
-            return "Error: ranking inválido.";
+    private final GameService service;
 
-        Integer anio = parseIntSafe(anioStr);
-        if (anio == null || anio < 1970)
-            return "Error: año inválido (≥ 1970).";
-
-        Double na = parseDoubleNonNegative(naSalesStr);
-        Double eu = parseDoubleNonNegative(euSalesStr);
-        Double jp = parseDoubleNonNegative(jpSalesStr);
-        Double other = parseDoubleNonNegative(otherSalesStr);
-        Double global = parseDoubleNonNegative(globalSalesStr);
-        if (na == null || eu == null || jp == null || other == null || global == null)
-            return "Error: ventas inválidas (≥ 0).";
-
-        Plataforma plataforma = parsePlataforma(plataformaStr);
-        Genero genero = parseGenero(generoStr);
-        if (plataforma == null) return "Error: plataforma inválida.";
-        if (genero == null) return "Error: género inválido.";
-
-        Game game = new Game(ranking, name.trim(), plataforma, anio, genero,
-                             editor.trim(), na, eu, jp, other, global);
-
-        Game created = service.create(game);
-        return "Juego creado con éxito: " + created;
-
-    } catch (Exception ex) {
-        return "Error inesperado: " + ex.getMessage();
+    public GameController(GameService service) {
+        this.service = service;
     }
 
+    /**
+     * Crea un juego con todos los campos
+     */
+    public String createGame(
+            String rankingStr,
+            String name,
+            String plataformaStr,
+            String anioStr,
+            String generoStr,
+            String editor,
+            String naSalesStr,
+            String euSalesStr,
+            String jpSalesStr,
+            String otherSalesStr,
+            String globalSalesStr
+    ) {
+        try {
+            if (name == null || name.trim().isEmpty()) {
+                return "Error: el nombre es obligatorio.";
+            }
 
-	public List<Game> ListGames(){
-		return service.listAll();
-	}
-	
+            // Parseos básicos (si falla, devolvemos error genérico de input)
+            final int ranking = Integer.parseInt(nonNullTrim(rankingStr));
+            final int anio    = Integer.parseInt(nonNullTrim(anioStr));
+            final double na   = Double.parseDouble(nonNullTrim(naSalesStr).replace(',', '.'));
+            final double eu   = Double.parseDouble(nonNullTrim(euSalesStr).replace(',', '.'));
+            final double jp   = Double.parseDouble(nonNullTrim(jpSalesStr).replace(',', '.'));
+            final double other= Double.parseDouble(nonNullTrim(otherSalesStr).replace(',', '.'));
+            final double global=Double.parseDouble(nonNullTrim(globalSalesStr).replace(',', '.'));
 
+            // Enums (en mayúsculas)
+            final Plataforma plataforma = Plataforma.valueOf(nonNullTrim(plataformaStr).toUpperCase());
+            final Genero genero         = Genero.valueOf(nonNullTrim(generoStr).toUpperCase());
+
+            // Editor: opcionalmente recortar (sin más validaciones)
+            final String editorOk = editor == null ? "" : editor.trim();
+
+            Game game = new Game(
+                    ranking,
+                    name.trim(),
+                    plataforma,
+                    anio,
+                    genero,
+                    editorOk,
+                    na, eu, jp, other, global
+            );
+
+            Game created = service.create(game);
+            return "Juego creado con éxito: " + created;
+
+        } catch (NumberFormatException | IllegalArgumentException e) {
+            return "Error de input (número o enum inválido).";
+        } catch (Exception ex) {
+            return "Error inesperado: " + ex.getMessage();
+        }
+    }
+
+    /* ===================== ACTUALIZAR ===================== */
+
+    /**
+     * Actualiza un juego existente (identificado por ranking).
+     * Mismo esquema que create, pero delega en service.update(game).
+     * Si tu Service no tiene update aún, créalo con la misma firma que create.
+     */
+    public String updateGame(
+            String rankingStr,
+            String name,
+            String plataformaStr,
+            String anioStr,
+            String generoStr,
+            String editor,
+            String naSalesStr,
+            String euSalesStr,
+            String jpSalesStr,
+            String otherSalesStr,
+            String globalSalesStr
+    ) {
+        try {
+            if (name == null || name.trim().isEmpty()) {
+                return "Error: el nombre es obligatorio.";
+            }
+
+            final int ranking = Integer.parseInt(nonNullTrim(rankingStr));
+            final int anio    = Integer.parseInt(nonNullTrim(anioStr));
+            final double na   = Double.parseDouble(nonNullTrim(naSalesStr).replace(',', '.'));
+            final double eu   = Double.parseDouble(nonNullTrim(euSalesStr).replace(',', '.'));
+            final double jp   = Double.parseDouble(nonNullTrim(jpSalesStr).replace(',', '.'));
+            final double other= Double.parseDouble(nonNullTrim(otherSalesStr).replace(',', '.'));
+            final double global=Double.parseDouble(nonNullTrim(globalSalesStr).replace(',', '.'));
+
+            final Plataforma plataforma = Plataforma.valueOf(nonNullTrim(plataformaStr).toUpperCase());
+            final Genero genero         = Genero.valueOf(nonNullTrim(generoStr).toUpperCase());
+            final String editorOk       = editor == null ? "" : editor.trim();
+
+            Game game = new Game(
+                    ranking,
+                    name.trim(),
+                    plataforma,
+                    anio,
+                    genero,
+                    editorOk,
+                    na, eu, jp, other, global
+            );
+
+            Game updated = service.update(game);
+            return "Juego actualizado con éxito: " + updated;
+
+        } catch (NumberFormatException | IllegalArgumentException e) {
+            return "Error de input (número o enum inválido).";
+        } catch (Exception ex) {
+            return "Error inesperado: " + ex.getMessage();
+        }
+    }
+
+    /* ===================== HELPERS ===================== */
+
+    private String nonNullTrim(String s) {
+        return (s == null) ? "" : s.trim();
+    }
 }
