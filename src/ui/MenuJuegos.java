@@ -47,12 +47,49 @@ public class MenuJuegos {
 	
 	
 	private void screenCreate() {
-		System.out.print("Introduce the game name:");
-		String name = scn.nextLine();
-		//String show = controller.createGame(name);
-		//System.out.println(show);
-	}
-	
+    System.out.println("== Crear juego ==");
+
+    System.out.print("Ranking (entero ≥ 1): ");
+    String ranking = scn.nextLine();
+
+    System.out.print("Nombre: ");
+    String name = scn.nextLine();
+
+    System.out.print("Plataforma (PC, PS, XB, NI): ");
+    String plataforma = scn.nextLine();
+
+    System.out.print("Año (≥ 1970): ");
+    String anio = scn.nextLine();
+
+    System.out.print("Género (ACCION, PUZZLE, SPORTS): ");
+    String genero = scn.nextLine();
+
+    System.out.print("Editor: ");
+    String editor = scn.nextLine();
+
+    System.out.print("NA_Sales (>=0): ");
+    String na = scn.nextLine();
+
+    System.out.print("EU_Sales (>=0): ");
+    String eu = scn.nextLine();
+
+    System.out.print("JP_Sales (>=0): ");
+    String jp = scn.nextLine();
+
+    System.out.print("Other_Sales (>=0): ");
+    String other = scn.nextLine();
+
+    System.out.print("Global_Sales (>=0): ");
+    String global = scn.nextLine();
+
+    String result = controller.createGame(
+        ranking, name, plataforma, anio, genero, editor, na, eu, jp, other, global
+    );
+
+    System.out.println(result);
+    System.out.println();
+}
+
 	private void screenList() {
 		
 	}

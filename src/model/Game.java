@@ -6,9 +6,9 @@ public class Game {
 	
 	public int ranking;
 	private String nombre;
-	private enum Plataforma{PC,PS,XB,NI};
+	private enum plataforma plataforma;
 	private int anio;
-	private enum Genero{ACCION, PUZZLE, SPORTS};
+	private enum Genero genero; 
 	private String editor;
 	private double NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_sales;
 	
@@ -18,12 +18,14 @@ public class Game {
 		this.nombre = nombre;
 	}
 	
-	public Game(int ranking, String nombre, int anio, String editor, double nA_Sales, double eU_Sales, double jP_Sales,
+	public Game(int ranking, String nombre, enum plataforma, int anio, enum genero, String editor, double nA_Sales, double eU_Sales, double jP_Sales,
 			double other_Sales, double global_sales) {
 		super();
 		this.ranking = ranking;
 		this.nombre = nombre;
+		this.plataforma = plataforma;
 		this.anio = anio;
+		this.genero = genero;
 		this.editor = editor;
 		NA_Sales = nA_Sales;
 		EU_Sales = eU_Sales;
