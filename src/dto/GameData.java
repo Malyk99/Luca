@@ -8,6 +8,4 @@ public interface GameData {
 	Game save(Game game);
 	List<Game> findAll();
 	boolean deleteByRanking(int ranking);
-	
-
 }

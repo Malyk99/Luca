@@ -103,10 +103,33 @@ public class Game {
 
 	@Override
 	public String toString() {
-		return "Game [ranking=" + ranking + ", nombre=" + nombre + ", anio=" + anio + ", editor=" + editor
-				+ ", NA_Sales=" + NA_Sales + ", EU_Sales=" + EU_Sales + ", JP_Sales=" + JP_Sales + ", Other_Sales="
-				+ Other_Sales + ", Global_sales=" + Global_sales + "]";
+		return String.format(
+			"""
+			Ranking: %d, Nombre: %s
+			Plataforma: %s, Año: %d, Género: %s
+			Editor: %s
+			Ventas (millones):
+			- NA: %.2f
+			- EU: %.2f
+			- JP: %.2f
+			- Other: %.2f
+			- Global: %.2f
+			""",
+			ranking,
+			nombre,
+			plataforma,
+			anio,
+			genero,
+			editor,
+			NA_Sales,
+			EU_Sales,
+			JP_Sales,
+			Other_Sales,
+			Global_sales
+		);
 	}
+
+
 
 	@Override
 	public int hashCode() {
