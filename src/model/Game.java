@@ -12,8 +12,6 @@ public class Game {
 	private String editor;
 	private double NA_Sales, EU_Sales, JP_Sales, Other_Sales, Global_sales;
 	
-	public Game() {}
-	
 	public Game(int ranking) {
 		this.ranking = ranking;
 	}
@@ -32,6 +30,15 @@ public class Game {
 		JP_Sales = jP_Sales;
 		Other_Sales = other_Sales;
 		Global_sales = global_sales;
+		
+	}
+	
+	public Game(int ranking, String nombre, Plataforma plataforma, int anio) {
+		super();
+		this.ranking = ranking;
+		this.nombre = nombre;
+		this.setPlataforma(plataforma);
+		this.anio = anio;
 		
 	}
 	

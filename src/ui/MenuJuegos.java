@@ -48,11 +48,12 @@ public class MenuJuegos {
 	
 	private void screenCreate() {
     System.out.println("== Crear juego ==");
-
+    System.out.println("");
     System.out.print("Ranking (entero ≥ 1): ");
+    String buffer = scn.nextLine();
     String ranking = scn.nextLine();
 
-    System.out.print("Nombre: ");
+    System.out.println("Nombre: ");
     String name = scn.nextLine();
 
     System.out.print("Plataforma (PC, PS, XB, NI): ");
@@ -82,6 +83,7 @@ public class MenuJuegos {
     System.out.print("Global_Sales (>=0): ");
     String global = scn.nextLine();
 
+    //String result = controller.createGame1(ranking);
     String result = controller.createGame(
         ranking, name, plataforma, anio, genero, editor, na, eu, jp, other, global
     );
