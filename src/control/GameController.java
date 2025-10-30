@@ -1,4 +1,4 @@
-package controller;
+package control;
 
 import model.Game;
 import model.Plataforma;
@@ -38,48 +38,45 @@ public class GameController {
                 return "Error: el nombre es obligatorio.";
             }
 
-            // Parseos básicos (si falla, devolvemos error genérico de input)
-            final int ranking = Integer.parseInt(nonNullTrim(rankingStr));
+            // Parseos simple si falla, devolvemos error genérico de input)
+            /*final int ranking = Integer.parseInt(nonNullTrim(rankingStr));
             final int anio    = Integer.parseInt(nonNullTrim(anioStr));
             final double na   = Double.parseDouble(nonNullTrim(naSalesStr).replace(',', '.'));
             final double eu   = Double.parseDouble(nonNullTrim(euSalesStr).replace(',', '.'));
             final double jp   = Double.parseDouble(nonNullTrim(jpSalesStr).replace(',', '.'));
             final double other= Double.parseDouble(nonNullTrim(otherSalesStr).replace(',', '.'));
-            final double global=Double.parseDouble(nonNullTrim(globalSalesStr).replace(',', '.'));
+            final double global= Double.parseDouble(nonNullTrim(globalSalesStr).replace(',', '.'));
 
-            // Enums (en mayúsculas)
+           
             final Plataforma plataforma = Plataforma.valueOf(nonNullTrim(plataformaStr).toUpperCase());
             final Genero genero         = Genero.valueOf(nonNullTrim(generoStr).toUpperCase());
-
-            // Editor: opcionalmente recortar (sin más validaciones)
-            final String editorOk = editor == null ? "" : editor.trim();
+            
+            final String editorOk = editor == null ? "" : editor.trim();*/
 
             Game game = new Game(
-                    ranking,
+                    rankingStr,
                     name.trim(),
-                    plataforma,
-                    anio,
-                    genero,
-                    editorOk,
-                    na, eu, jp, other, global
+                    plataformaStr,
+                    anioStr,
+                    generoStr,
+                    editor,
+                    naSalesStr, euSalesStr, jpSalesStr, otherSalesStr, globalSalesStr
             );
 
             Game created = service.create(game);
             return "Juego creado con éxito: " + created;
 
-        } catch (NumberFormatException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return "Error de input (número o enum inválido).";
         } catch (Exception ex) {
             return "Error inesperado: " + ex.getMessage();
         }
     }
 
-    /* ===================== ACTUALIZAR ===================== */
+   
 
     /**
      * Actualiza un juego existente (identificado por ranking).
-     * Mismo esquema que create, pero delega en service.update(game).
-     * Si tu Service no tiene update aún, créalo con la misma firma que create.
      */
     public String updateGame(
             String rankingStr,
@@ -124,7 +121,7 @@ public class GameController {
             Game updated = service.update(game);
             return "Juego actualizado con éxito: " + updated;
 
-        } catch (NumberFormatException | IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return "Error de input (número o enum inválido).";
         } catch (Exception ex) {
             return "Error inesperado: " + ex.getMessage();
