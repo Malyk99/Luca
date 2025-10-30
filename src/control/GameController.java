@@ -160,9 +160,42 @@ public class GameController {
         }
     }
 
-    /* ===================== HELPERS ===================== */
+
+    public String deleteGame(String rankingStr) {
+        try {
+            final int ranking = Integer.parseInt(nonNullTrim(rankingStr));
+            service.delete(ranking);
+            return "Juego eliminado con éxito.";
+        } catch (IllegalArgumentException e) {
+            return "Error de input (número inválido).";
+        } catch (Exception ex) {
+            return "Error inesperado: " + ex.getMessage();
+        }
+    }
 
     private String nonNullTrim(String s) {
         return (s == null) ? "" : s.trim();
+    }
+
+    public java.util.List<model.Game> listAll() {
+        return service.listAll();
+    }
+
+    public java.util.List<String> listEditors() {
+        return service.listEditors(); // o construir aquí con stream sobre listarTodos()
+    }
+
+    public java.util.List<model.Game> listByGenre(String generoStr) {
+        try {
+            model.Genero genero = model.Genero.valueOf(generoStr.trim().toUpperCase());
+            return service.listarPorGenero(genero);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Género inválido.");
+            return java.util.Collections.emptyList();
+        }
+    }
+
+    public java.util.List<model.Game> listCenturyXX() {
+        return service.listarSigloXX(); // año <= 2000
     }
 }

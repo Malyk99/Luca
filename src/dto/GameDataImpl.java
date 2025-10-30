@@ -21,6 +21,9 @@ private final List<model.Game> games = new ArrayList<>();
 	public List<Game> findAll(){
 		return Collections.unmodifiableList(games);
 	}
-
+	@Override
+	public boolean deleteByRanking(int ranking) {
+		return games.removeIf(g -> g.getRanking() == ranking);
+	}
 	
 }

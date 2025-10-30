@@ -3,7 +3,7 @@ package control;
 import dto.GameDataImpl;
 import service.GameService;
 import service.GameServiceImpl;
-import ui.MenuJuegos;
+import ui.MainMenu;
 
 public class Main {
 
@@ -13,7 +13,7 @@ public class Main {
 		GameService service = new GameServiceImpl(data);
 		GameController controller = new GameController(service);
 		
-		MenuJuegos ui = new MenuJuegos(controller); 
+		MainMenu ui = new MainMenu(controller); 
 		ui.showMainMenu();
 		
 		
